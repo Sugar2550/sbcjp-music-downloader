@@ -83,7 +83,7 @@ tr:last-child td {
 </style>
 </head>
 <body>
-<h1>🎵 OGG Music Downloader 🎵</h1>
+<h1>The Battle Cats Music Downloader</h1>
 <input type="text" id="search" placeholder="曲名を検索..." />
 <div id="track-list"></div>
 
@@ -95,7 +95,7 @@ const trackList = document.getElementById('track-list');
 const searchInput = document.getElementById('search');
 
 // GitHub raw URL の JSON を読み込む
-fetch('https://raw.githubusercontent.com/<ユーザー名>/<リポジトリ名>/main/songs.json')
+fetch('https://raw.githubusercontent.com/Sugar2550/ogg-music-downloader/main/songs.json')
   .then(res => res.json())
   .then(data => {
     songs = data;
