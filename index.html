@@ -71,13 +71,28 @@ tr:last-child td {
   background: #1e7e34;
 }
 @media (max-width: 500px) {
+  table {
+    width: 700px;                
+    min-width: 400px;
+    max-width: none;
+    overflow-x: auto;
+    display: block;
+  }
   th, td {
     font-size: 13px;
     padding: 8px 5px;
+    white-space: nowrap;        
   }
   .button-play, .button-download {
     font-size: 13px;
     padding: 7px 8px;
+    min-width: 68px;             
+    display: inline-block;       
+    margin-bottom: 0;
+  }
+  td {
+    vertical-align: middle;
+    text-align: left;            
   }
 }
 </style>
@@ -94,16 +109,14 @@ let playingIndex = null;
 const trackList = document.getElementById('track-list');
 const searchInput = document.getElementById('search');
 
-// GitHub raw URL の JSON を読み込む
 fetch('https://raw.githubusercontent.com/Sugar2550/ogg-music-downloader/main/songs.json')
   .then(res => res.json())
   .then(data => {
     songs = data;
-    renderList(""); // 初期表示は全曲
+    renderList(""); 
   })
   .catch(err => console.error('JSON読み込みエラー:', err));
 
-// テーブル描画（イベントリスナーで再生ボタン制御）
 function renderList(filter = "") {
   let filteredSongs = songs.filter(track => track.title.toLowerCase().includes(filter.toLowerCase()));
   let html = `
@@ -118,7 +131,6 @@ function renderList(filter = "") {
       <tbody>
   `;
   filteredSongs.forEach((track, idx) => {
-    // idxはfilteredSongsのインデックスなので、元リストのインデックスを取得
     const origIndex = songs.indexOf(track);
     let buttonIcon = (playingIndex === origIndex && !audio.paused) ? "⏸ 停止" : "▶ 再生";
     html += `
@@ -135,7 +147,6 @@ function renderList(filter = "") {
   `;
   trackList.innerHTML = html;
 
-  // ボタンにイベントリスナーを追加
   document.querySelectorAll('.button-play').forEach(btn => {
     btn.addEventListener('click', function() {
       const idx = Number(this.getAttribute('data-index'));
@@ -144,7 +155,6 @@ function renderList(filter = "") {
   });
 }
 
-// 再生・停止
 function togglePlay(index) {
   if (audio.src !== songs[index].file) {
     audio.src = songs[index].file;
@@ -163,13 +173,11 @@ function togglePlay(index) {
   }
 }
 
-// 再生が終わったらボタン表示を戻す
 audio.addEventListener('ended', () => {
   playingIndex = null;
   renderList(searchInput.value);
 });
 
-// 検索機能
 searchInput.addEventListener('input', e => renderList(e.target.value));
 </script>
 </body>
