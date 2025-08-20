@@ -26,7 +26,7 @@ h1 {
 }
 table {
   width: 100%;
-  max-width: 700px;
+  max-width: 900px;
   margin: 0 auto;
   border-collapse: collapse;
   background: #fff;
@@ -126,6 +126,7 @@ function renderList(filter = "") {
           <th>曲名</th>
           <th>再生/停止</th>
           <th>ダウンロード</th>
+          <th>追加Ver.</th>
         </tr>
       </thead>
       <tbody>
@@ -138,6 +139,7 @@ function renderList(filter = "") {
         <td>${track.title}</td>
         <td><button class="button-play" data-index="${origIndex}">${buttonIcon}</button></td>
         <td><a class="button-download" href="${track.file}" download>⬇ ダウンロード</a></td>
+        <td>${track.version ? track.version : "-"}</td>
       </tr>
     `;
   });
