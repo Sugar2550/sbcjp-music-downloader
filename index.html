@@ -1,186 +1,36 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BC Music Downloader</title>
-<style>
-body {
-  font-family: sans-serif;
-  padding: 20px;
-  background: #f5f5f5;
-}
-h1 {
-  text-align: center;
-  font-size: 1.8em;
-}
-#search {
-  width: 90%;
-  max-width: 400px;
-  margin: 0 auto 20px;
-  padding: 12px;
-  font-size: 16px;
-  display: block;
-  border-radius: 10px;
-  border: 1px solid #ccc;
-}
-table {
-  width: 100%;
-  max-width: 900px;
-  margin: 0 auto;
-  border-collapse: collapse;
-  background: #fff;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-th, td {
-  padding: 12px 10px;
-  border-bottom: 1px solid #eaeaea;
-  text-align: left;
-  font-size: 15px;
-}
-th {
-  background: #007bff;
-  color: #fff;
-}
-tr:last-child td {
-  border-bottom: none;
-}
-.button-play, .button-download {
-  padding: 7px 16px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 10px;
-  text-align: center;
-  text-decoration: none;
-}
-.button-play {
-  background: #007bff;
-  color: #fff;
-}
-.button-play:hover {
-  background: #0056b3;
-}
-.button-download {
-  background: #28a745;
-  color: #fff;
-}
-.button-download:hover {
-  background: #1e7e34;
-}
-@media (max-width: 500px) {
-  table {
-    width: 700px;                
-    min-width: 400px;
-    max-width: none;
-    overflow-x: auto;
-    display: block;
-  }
-  th, td {
-    font-size: 13px;
-    padding: 8px 5px;
-    white-space: nowrap;        
-  }
-  .button-play, .button-download {
-    font-size: 13px;
-    padding: 7px 8px;
-    min-width: 68px;             
-    display: inline-block;       
-    margin-bottom: 0;
-  }
-  td {
-    vertical-align: middle;
-    text-align: left;            
-  }
-}
-</style>
+  <meta charset="UTF-8">
+  <title>BC Music Downloader</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      margin-top: 60px;
+    }
+    .device-btn {
+      display: inline-block;
+      margin: 20px 40px;
+      padding: 20px 40px;
+      font-size: 1.5rem;
+      border-radius: 10px;
+      border: none;
+      background: #4caf50;
+      color: white;
+      cursor: pointer;
+      transition: background 0.2s;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    }
+    .device-btn:hover {
+      background: #388e3c;
+    }
+  </style>
 </head>
 <body>
-<h1>The Battle Cats Music Downloader</h1>
-<input type="text" id="search" placeholder="曲名を検索..." />
-<div id="track-list"></div>
-
-<script>
-let songs = [];
-let audio = new Audio();
-let playingIndex = null;
-const trackList = document.getElementById('track-list');
-const searchInput = document.getElementById('search');
-
-fetch('https://raw.githubusercontent.com/Sugar2550/ogg-music-downloader/main/songs.json')
-  .then(res => res.json())
-  .then(data => {
-    songs = data;
-    renderList(""); 
-  })
-  .catch(err => console.error('JSON読み込みエラー:', err));
-
-function renderList(filter = "") {
-  let filteredSongs = songs.filter(track => track.title.toLowerCase().includes(filter.toLowerCase()));
-  let html = `
-    <table>
-      <thead>
-        <tr>
-          <th>曲名</th>
-          <th>再生/停止</th>
-          <th>ダウンロード</th>
-          <th>追加Ver.</th>
-        </tr>
-      </thead>
-      <tbody>
-  `;
-  filteredSongs.forEach((track, idx) => {
-    const origIndex = songs.indexOf(track);
-    let buttonIcon = (playingIndex === origIndex && !audio.paused) ? "⏸ 停止" : "▶ 再生";
-    html += `
-      <tr>
-        <td>${track.title}</td>
-        <td><button class="button-play" data-index="${origIndex}">${buttonIcon}</button></td>
-        <td><a class="button-download" href="${track.file}" download>⬇ ダウンロード</a></td>
-        <td>${track.version ? track.version : "-"}</td>
-      </tr>
-    `;
-  });
-  html += `
-      </tbody>
-    </table>
-  `;
-  trackList.innerHTML = html;
-
-  document.querySelectorAll('.button-play').forEach(btn => {
-    btn.addEventListener('click', function() {
-      const idx = Number(this.getAttribute('data-index'));
-      togglePlay(idx);
-    });
-  });
-}
-
-function togglePlay(index) {
-  if (audio.src !== songs[index].file) {
-    audio.src = songs[index].file;
-    audio.play();
-    playingIndex = index;
-    renderList(searchInput.value);
-  } else {
-    if (audio.paused) {
-      audio.play();
-      playingIndex = index;
-    } else {
-      audio.pause();
-      playingIndex = index;
-    }
-    renderList(searchInput.value);
-  }
-}
-
-audio.addEventListener('ended', () => {
-  playingIndex = null;
-  renderList(searchInput.value);
-});
-
-searchInput.addEventListener('input', e => renderList(e.target.value));
-</script>
+  <h1>Download Music</h1>
+  <p>ダウンロードしたいファイル形式を選択してください</p>
+  <button class="device-btn" onclick="location.href='iphone.html'">MP3</button>
+  <button class="device-btn" onclick="location.href='android.html'">OGG</button>
 </body>
 </html>
