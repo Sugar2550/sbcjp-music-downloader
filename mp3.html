@@ -197,8 +197,13 @@ function togglePlay(index) {
 }
 
 audio.addEventListener('ended', () => {
-  playingIndex = null;
-  renderList(searchInput.value);
+  if (document.getElementById('loopToggle').checked) {
+    audio.currentTime = 0;
+    audio.play();
+  } else {
+    playingIndex = null;
+    renderList(searchInput.value);
+  }
 });
 
 searchInput.addEventListener('input', e => renderList(e.target.value));
