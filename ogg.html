@@ -94,12 +94,30 @@ tr:last-child td {
     vertical-align: middle;
     text-align: left;            
   }
+  .controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    margin-bottom: 18px;
+  }
+
+  .loop-label {
+    font-size: 1.1em;
+    margin-left: 10px;
+    user-select: none;
+  }
 }
 </style>
 </head>
 <body>
 <h1>Download OGG</h1>
-<input type="text" id="search" placeholder="曲名を検索..." />
+<div class="controls">
+  <input type="text" id="search" placeholder="曲名を検索..." />
+  <label class="loop-label">
+    <input type="checkbox" id="loopToggle"> ループ再生
+  </label>
+</div>
 <div id="track-list"></div>
 
 <script>
