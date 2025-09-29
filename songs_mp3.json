@@ -768,7 +768,7 @@
     "title": "152 ストリートファイターバトルテーマ12 (VSルーク)",
     "file": "https://raw.githubusercontent.com/Sugar2550/ogg-music-downloader/main/music/mp3/152.mp3",
     "version": "11.9"
-  },
+  },  
   {
     "title": "153 地底迷宮グランドアビステーマ1",
     "file": "https://raw.githubusercontent.com/Sugar2550/ogg-music-downloader/main/music/mp3/153.mp3",
@@ -905,13 +905,23 @@
     "version": "14.5"
   },
   {
-    "title": "180 破天荒予報テーマ1",
+    "title": "180 破天荒予報テーマ",
     "file": "https://raw.githubusercontent.com/Sugar2550/ogg-music-downloader/main/music/mp3/180.mp3",
     "version": "14.5"
   },
   {
-    "title": "181 破天荒予報テーマ2",
+    "title": "181 嵐を呼ぶサバイバルテーマ",
     "file": "https://raw.githubusercontent.com/Sugar2550/ogg-music-downloader/main/music/mp3/181.mp3",
     "version": "14.5"
+  },
+  {
+    "title": "182 ストリートファイターバトルテーマ13 (VSキャミィ)",
+    "file": "https://raw.githubusercontent.com/Sugar2550/ogg-music-downloader/main/music/mp3/182.mp3",
+    "version": "14.7"
+  },
+  {
+    "title": "183 ストリートファイターバトルテーマ14 (VSジュリ)",
+    "file": "https://raw.githubusercontent.com/Sugar2550/ogg-music-downloader/main/music/mp3/183.mp3",
+    "version": "14.7"
   }
 ]

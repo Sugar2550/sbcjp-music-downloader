@@ -905,13 +905,23 @@
     "version": "14.5"
   },
   {
-    "title": "180 破天荒予報テーマ1",
+    "title": "180 破天荒予報テーマ",
     "file": "https://raw.githubusercontent.com/Sugar2550/ogg-music-downloader/main/music/ogg/180.ogg",
     "version": "14.5"
   },
   {
-    "title": "181 破天荒予報テーマ2",
+    "title": "181 嵐を呼ぶサバイバルテーマ",
     "file": "https://raw.githubusercontent.com/Sugar2550/ogg-music-downloader/main/music/ogg/181.ogg",
     "version": "14.5"
+  },
+  {
+    "title": "182 ストリートファイターバトルテーマ13 (VSキャミィ)",
+    "file": "https://raw.githubusercontent.com/Sugar2550/ogg-music-downloader/main/music/ogg/182.ogg",
+    "version": "14.7"
+  },
+  {
+    "title": "183 ストリートファイターバトルテーマ14 (VSジュリ)",
+    "file": "https://raw.githubusercontent.com/Sugar2550/ogg-music-downloader/main/music/ogg/183.ogg",
+    "version": "14.7"
   }
 ]
