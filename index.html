@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>BC Music Downloader</title>
+  <link rel="stylesheet" href="common.css">
   <style>
     body {
       font-family: sans-serif;
@@ -16,14 +17,75 @@
       font-size: 1.5rem;
       border-radius: 10px;
       border: none;
-      background: #4caf50;
-      color: white;
+      background: #ededed;
+      color: #222;
       cursor: pointer;
       transition: background 0.2s;
       box-shadow: 0 2px 6px rgba(0,0,0,0.15);
     }
     .device-btn:hover {
-      background: #388e3c;
+      background: #d6d6d6;
+      color: #111;
+    }
+    .playlist-link-row {
+      text-align: center;
+      margin: 0 auto 16px auto;
+    }
+    .dark-toggle {
+      position: fixed;
+      left: 18px;
+      bottom: 18px;
+      z-index: 100;
+      width: 58px;
+      height: 30px;
+      background: #bbb;
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .dark-toggle .icon {
+      width: 24px;
+      height: 24px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 2px;
+      transition: filter 0.2s;
+    }
+    .dark-toggle .icon.sun {
+      filter: brightness(1.2) saturate(1.2);
+    }
+    .dark-toggle .icon.moon {
+      filter: grayscale(0.5);
+    }
+    .dark-toggle.active {
+      background: #888;
+    }
+    .dark-toggle .icon.sun {
+      background: #fff;
+      border-radius: 50%;
+    }
+    .dark-toggle.active .icon.moon {
+      background: #fff;
+      border-radius: 50%;
+    }
+    .dark-toggle .indicator {
+      position: absolute;
+      left: 4px;
+      top: 3px;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      transition: left 0.25s;
+      background: #fff;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    }
+    .dark-toggle.active .indicator {
+      left: 30px;
+      background: #444;
     }
   </style>
 </head>
@@ -33,5 +95,37 @@
   <p>oggの方が音質は良いですが,iPhoneだと再生できない可能性があります｡</p>
   <button class="device-btn" onclick="location.href='mp3.html'">MP3</button>
   <button class="device-btn" onclick="location.href='ogg.html'">OGG</button>
+  <div class="playlist-link-row">
+    <button class="device-btn" onclick="location.href='playlist.html'">PLAYLIST</button>
+  </div>
+  <div class="dark-toggle" id="darkToggle" title="ダークモード切替">
+    <span class="icon sun">
+      <svg width="20" height="20" viewBox="0 0 20 20"><circle cx="10" cy="10" r="4" fill="#222"/><g stroke="#222" stroke-width="1.5"><line x1="10" y1="2" x2="10" y2="5"/><line x1="10" y1="15" x2="10" y2="18"/><line x1="2" y1="10" x2="5" y2="10"/><line x1="15" y1="10" x2="18" y2="10"/><line x1="4" y1="4" x2="6" y2="6"/><line x1="16" y1="4" x2="14" y2="6"/><line x1="4" y1="16" x2="6" y2="14"/><line x1="16" y1="16" x2="14" y2="14"/></g></svg>
+    </span>
+    <span class="icon moon">
+      <svg width="20" height="20" viewBox="0 0 20 20"><path d="M15.5 10a5.5 5.5 0 1 1-6.3-5.46a7 7 0 1 0 7.78 7.78A5.47 5.47 0 0 1 15.5 10z" fill="#444"/></svg>
+    </span>
+    <span class="indicator"></span>
+  </div>
+  <script>
+    const darkToggle = document.getElementById('darkToggle');
+    function setDarkMode(isDark) {
+      if (isDark) {
+        document.body.classList.add('dark-mode');
+        darkToggle.classList.add('active');
+        localStorage.setItem('darkMode', 'on');
+      } else {
+        document.body.classList.remove('dark-mode');
+        darkToggle.classList.remove('active');
+        localStorage.setItem('darkMode', 'off');
+      }
+    }
+    if (localStorage.getItem('darkMode') === 'on') {
+      setDarkMode(true);
+    }
+    darkToggle.onclick = function() {
+      setDarkMode(!document.body.classList.contains('dark-mode'));
+    }
+  </script>
 </body>
 </html>

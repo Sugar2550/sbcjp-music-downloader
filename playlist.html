@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>プレイリスト</title>
+<link rel="stylesheet" href="common.css">
+<style>
+body { padding: 20px; }
+h1 { text-align: center; }
+.button-row {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  margin-bottom: 20px;
+}
+.table-scroll {
+  overflow-x: auto;
+  display: block;
+  margin-top: 24px;
+}
+#playlist-table {
+  margin: 0 auto;
+}
+</style>
+</head>
+<body>
+<div class="button-row">
+  <button class="simple-btn" onclick="location.href='mp3.html'">MP3</button>
+  <button class="simple-btn" onclick="location.href='ogg.html'">OGG</button>
+</div>
+<h1>あなたのプレイリスト</h1>
+<div class="table-scroll">
+  <table id="playlist-table">
+    <thead>
+      <tr>
+        <th>曲名</th>
+        <th>再生/停止</th>
+        <th>削除</th>
+      </tr>
+    </thead>
+    <tbody id="playlist-tbody"></tbody>
+  </table>
+</div>
+<div style="text-align:center; margin-top:18px;">
+  <button class="simple-btn" onclick="clearPlaylist()">全て削除</button>
+</div>
+<script>
+let playlist = JSON.parse(localStorage.getItem('playlist') || '[]');
+let audio = new Audio();
+let playingIndex = null;
+
+function renderPlaylist() {
+  const tbody = document.getElementById('playlist-tbody');
+  if (!playlist.length) {
+    tbody.innerHTML = `<tr><td colspan="3" style="text-align:center;">プレイリストは空です。</td></tr>`;
+    return;
+  }
+  tbody.innerHTML = '';
+  playlist.forEach((track, i) => {
+    tbody.innerHTML += `
+      <tr>
+        <td class="song-title">${track.title}</td>
+        <td>
+          <button class="simple-btn" onclick="playFromPlaylist(${i})">
+            ${playingIndex === i && !audio.paused ? "⏸ 停止" : "▶ 再生"}
+          </button>
+        </td>
+        <td>
+          <button class="simple-btn" onclick="removeFromPlaylist(${i})">削除</button>
+        </td>
+      </tr>`;
+  });
+}
+
+window.playFromPlaylist = function(i) {
+  if (audio.src !== playlist[i].file) {
+    audio.src = playlist[i].file;
+    audio.play();
+    playingIndex = i;
+    renderPlaylist();
+  } else {
+    if (audio.paused) {
+      audio.play();
+      playingIndex = i;
+    } else {
+      audio.pause();
+      playingIndex = i;
+    }
+    renderPlaylist();
+  }
+};
+
+audio.addEventListener('ended', () => {
+  if (playingIndex !== null && playingIndex + 1 < playlist.length) {
+    playFromPlaylist(playingIndex + 1);
+  } else {
+    playingIndex = null;
+    renderPlaylist();
+  }
+});
+
+window.removeFromPlaylist = function(i) {
+  playlist.splice(i, 1);
+  localStorage.setItem('playlist', JSON.stringify(playlist));
+  renderPlaylist();
+};
+window.clearPlaylist = function() {
+  playlist = [];
+  localStorage.removeItem('playlist');
+  renderPlaylist();
+};
+
+renderPlaylist();
+</script>
+</body>
+</html>
