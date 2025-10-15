@@ -153,21 +153,42 @@ tr:nth-child(odd) td { background: #fff; }
   background: #444;
 }
 
-@media (max-width: 500px) {
-  table {
-    width: 700px;
-    min-width: 400px;
-    max-width: none;
+@media (max-width: 768px) {
+  .table-scroll {
     overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  table {
+    width: 100%;
+    min-width: unset;
+    max-width: 100%;
     display: block;
   }
+
   th, td {
     font-size: 13px;
-    padding: 5px 5px;
+    padding: 6px;
     white-space: nowrap;
-    vertical-align: middle;
+  }
+
+  .search-area {
+    flex-direction: column;
+    align-items: stretch;
+    max-width: 100%;
+  }
+
+  .search-box input[type="text"] {
+    font-size: 16px;
+    padding: 10px 12px;
+  }
+
+  .simple-btn {
+    width: 100%;
+    justify-content: center;
   }
 }
+
 body.dark-mode {
   background: #222;
   color: #fff;
