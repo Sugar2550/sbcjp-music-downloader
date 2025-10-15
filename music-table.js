@@ -48,7 +48,7 @@ function initMusicTable(options) {
         html += `<tr>
           <td class="song-title">${track.title}</td>
           <td><button class="simple-btn" data-index="${origIndex}">${buttonIcon}</button></td>
-          <td><a class="simple-btn" href="${track.file}" download>⬇ ダウンロード</a></td>
+          <td><button class="simple-btn" onclick="downloadFile('${track.file}', '${track.title}')">⬇ ダウンロード</button></td>
           ${hasPlaylist ? `<td><button class="simple-btn" onclick="addToPlaylist(${origIndex})">＋追加</button></td>` : ''}
           <td>${track.version ? track.version : "-"}</td>
         </tr>`;
@@ -118,3 +118,12 @@ function initMusicTable(options) {
 
   prefersDark.addEventListener("change", applyTheme);
 })();
+
+function downloadFile(url, filename) {
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename || url.split('/').pop();
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+}
