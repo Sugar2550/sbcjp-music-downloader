@@ -103,3 +103,18 @@ function initMusicTable(options) {
 
   searchInput.addEventListener('input', e => renderList(e.target.value));
 }
+(function() {
+  const prefersDark = window.matchMedia("(prefers-color-scheme: dark)");
+
+  function applyTheme(e) {
+    if (e.matches) {
+      document.body.classList.add("dark-mode");
+    } else {
+      document.body.classList.remove("dark-mode");
+    }
+  }
+
+  applyTheme(prefersDark);
+
+  prefersDark.addEventListener("change", applyTheme);
+})();

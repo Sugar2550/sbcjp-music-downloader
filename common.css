@@ -153,42 +153,6 @@ tr:nth-child(odd) td { background: #fff; }
   background: #444;
 }
 
-@media (max-width: 768px) {
-  .table-scroll {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  table {
-    width: 100%;
-    min-width: unset;
-    max-width: 100%;
-    display: block;
-  }
-
-  th, td {
-    font-size: 13px;
-    padding: 6px;
-    white-space: nowrap;
-  }
-
-  .search-area {
-    flex-direction: column;
-    align-items: stretch;
-    max-width: 100%;
-  }
-
-  .search-box input[type="text"] {
-    font-size: 16px;
-    padding: 10px 12px;
-  }
-
-  .simple-btn {
-    width: 100%;
-    justify-content: center;
-  }
-}
-
 body.dark-mode {
   background: #222;
   color: #fff;
@@ -271,5 +235,74 @@ body.dark-mode .search-box input[type="text"]:focus {
   justify-content: center;
   margin: 0 2px;
   transition: filter 0.2s;
+}
+/* === OSのテーマ設定に自動連動 === */
+@media (prefers-color-scheme: dark) {
+  body {
+    background: #222;
+    color: #fff;
+  }
+
+  input[type="text"],
+  #search {
+    background: #222;
+    color: #eee;
+    border-color: #333;
+  }
+
+  table {
+    border-collapse: collapse;
+    background: #222 !important;
+    color: #fff !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.5) !important;
+  }
+
+  th, td {
+    border: 1px solid #444 !important;
+    background: #222 !important;
+    color: #fff !important;
+  }
+
+  th {
+    background: #444 !important;
+    font-weight: bold !important;
+  }
+
+  tr:nth-child(even) td {
+    background: #2a2a2a !important;
+  }
+
+  tr:nth-child(odd) td {
+    background: #222 !important;
+  }
+
+  .loop-label {
+    background: #222;
+    border-color: #2884ff;
+    color: #2884ff;
+  }
+
+  .simple-btn {
+    background: #444;
+    color: #eee;
+  }
+
+  .simple-btn:hover, .simple-btn:focus {
+    background: #666;
+    color: #fff;
+  }
+
+  .song-title { text-align:left !important; }
+
+  .search-box input[type="text"] {
+    background: #222;
+    color: #eee;
+    border-color: #2884ff;
+  }
+
+  .search-box input[type="text"]:focus {
+    border-color: #82b1ff;
+    background: #222;
+  }
 }
 
