@@ -78,7 +78,7 @@ function sharePlaylist() {
   const encoded = encodeCompressed(ids);
   const url = `${location.origin}/playlist.html?sd=${encoded}`;
   navigator.clipboard.writeText(url)
-    .then(() => alert("短縮リンクをコピーしました！"))
+    .then(() => alert("共有リンクをコピーしました！"))
     .catch(() => alert("コピーに失敗しました。"));
 }
 
