@@ -69,6 +69,7 @@ tr:nth-child(odd) td { background: #fff; }
   display: flex;
   align-items: center;
   justify-content: flex-start;
+  gap: 32px;
 }
 .loop-label {
   font-size: 1.2em;
