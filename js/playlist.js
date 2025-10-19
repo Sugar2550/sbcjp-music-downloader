@@ -2,6 +2,10 @@ let playlist = JSON.parse(localStorage.getItem('playlist') || '[]');
 let audio = new Audio();
 let playingIndex = null;
 
+function savePlaylist() {
+  localStorage.setItem('playlist', JSON.stringify(playlist));
+}
+
 function renderPlaylist() {
   const tbody = document.getElementById('playlist-tbody');
   if (!playlist.length) {
@@ -10,17 +14,12 @@ function renderPlaylist() {
   }
   tbody.innerHTML = '';
   playlist.forEach((track, i) => {
+    const isPlaying = playingIndex === i && !audio.paused;
     tbody.innerHTML += `
       <tr>
         <td class="song-title">${track.title}</td>
-        <td>
-          <button class="simple-btn" onclick="playFromPlaylist(${i})">
-            ${playingIndex === i && !audio.paused ? "⏸ 停止" : "▶ 再生"}
-          </button>
-        </td>
-        <td>
-          <button class="simple-btn" onclick="removeFromPlaylist(${i})">削除</button>
-        </td>
+        <td><button class="simple-btn" onclick="playFromPlaylist(${i})">${isPlaying ? "⏸ 停止" : "▶ 再生"}</button></td>
+        <td><button class="simple-btn" onclick="removeFromPlaylist(${i})">削除</button></td>
       </tr>`;
   });
 }
@@ -30,17 +29,10 @@ window.playFromPlaylist = function(i) {
     audio.src = playlist[i].file;
     audio.play();
     playingIndex = i;
-    renderPlaylist();
   } else {
-    if (audio.paused) {
-      audio.play();
-      playingIndex = i;
-    } else {
-      audio.pause();
-      playingIndex = i;
-    }
-    renderPlaylist();
+    audio.paused ? audio.play() : audio.pause();
   }
+  renderPlaylist();
 };
 
 audio.addEventListener('ended', () => {
@@ -54,7 +46,7 @@ audio.addEventListener('ended', () => {
 
 window.removeFromPlaylist = function(i) {
   playlist.splice(i, 1);
-  localStorage.setItem('playlist', JSON.stringify(playlist));
+  savePlaylist();
   renderPlaylist();
 };
 window.clearPlaylist = function() {
@@ -63,4 +55,51 @@ window.clearPlaylist = function() {
   renderPlaylist();
 };
 
-renderPlaylist();
+function encodeCompressed(str) {
+  const data = new TextEncoder().encode(str);
+  const deflated = pako.deflate(data);
+  let bin = '';
+  deflated.forEach(b => bin += String.fromCharCode(b));
+  return btoa(bin).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+}
+
+function decodeCompressed(str) {
+  str = str.replace(/-/g, '+').replace(/_/g, '/');
+  const bin = atob(str);
+  const bytes = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+  const inflated = pako.inflate(bytes);
+  return new TextDecoder().decode(inflated);
+}
+
+function sharePlaylist() {
+  if (!playlist.length) return alert("プレイリストが空です");
+  const ids = playlist.map(t => t.file).join(',');
+  const encoded = encodeCompressed(ids);
+  const url = `${location.origin}/playlist.html?sd=${encoded}`;
+  navigator.clipboard.writeText(url)
+    .then(() => alert("短縮リンクをコピーしました！"))
+    .catch(() => alert("コピーに失敗しました。"));
+}
+
+const shared = new URLSearchParams(location.search).get('sd');
+if (shared) {
+  try {
+    const decoded = decodeCompressed(shared);
+    const files = decoded.split(',');
+    Promise.all([
+      fetch('/songs_mp3.json').then(r => r.json()),
+      fetch('/songs_ogg.json').then(r => r.json()).catch(() => []),
+    ])
+    .then(([mp3, ogg]) => {
+      playlist = [...mp3, ...ogg].filter(t => files.includes(t.file));
+      renderPlaylist();
+    });
+  } catch (e) {
+    console.error(e);
+    alert("無効な共有リンクです。");
+  }
+} else {
+  renderPlaylist();
+}
+
