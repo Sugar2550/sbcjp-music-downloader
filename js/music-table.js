@@ -11,6 +11,17 @@ function initMusicTable(options) {
   const trackList = document.getElementById(tableContainerId);
   const searchInput = document.getElementById('search');
   const loopToggle = document.getElementById('loopToggle');
+  if (loopToggle) {
+    const savedLoop = localStorage.getItem('loopEnabled') === 'true';
+    loopToggle.checked = savedLoop;
+    audio.loop = savedLoop;
+
+    loopToggle.addEventListener('change', () => {
+      audio.loop = loopToggle.checked;
+      localStorage.setItem('loopEnabled', loopToggle.checked);
+    });
+  }
+
 
   fetch(jsonUrl)
     .then(res => res.json())
