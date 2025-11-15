@@ -1,4 +1,5 @@
 let playlist = JSON.parse(localStorage.getItem('playlist') || '[]');
+let isLoopAllEnabled = localStorage.getItem('playlistLoopEnabled') === 'true';
 let audio = new Audio();
 let playingIndex = null;
 
@@ -36,11 +37,15 @@ window.playFromPlaylist = function(i) {
 };
 
 audio.addEventListener('ended', () => {
-  if (playingIndex !== null && playingIndex + 1 < playlist.length) {
-    playFromPlaylist(playingIndex + 1);
-  } else {
-    playingIndex = null;
-    renderPlaylist();
+  if (playingIndex !== null) {
+    if (playingIndex + 1 < playlist.length) {
+      playFromPlaylist(playingIndex + 1);
+    } else if (isLoopAllEnabled) {
+      playFromPlaylist(0);
+    } else {
+      playingIndex = null;
+      renderPlaylist();
+    }
   }
 });
 
@@ -102,4 +107,15 @@ if (shared) {
 } else {
   renderPlaylist();
 }
+
+const loopToggle = document.getElementById('loopToggle');
+if (loopToggle) {
+  loopToggle.checked = isLoopAllEnabled;
+  
+  loopToggle.addEventListener('change', () => {
+    isLoopAllEnabled = loopToggle.checked;
+    localStorage.setItem('playlistLoopEnabled', isLoopAllEnabled);
+  });
+}
+
 

@@ -27,10 +27,16 @@ h1 { text-align: center; }
 </head>
 <body>
 <div class="button-row">
+  <button class="simple-btn" onclick="location.href='index.html'">HOME</button>
   <button class="simple-btn" onclick="location.href='mp3.html'">MP3</button>
   <button class="simple-btn" onclick="location.href='ogg.html'">OGG</button>
 </div>
 <h1>あなたのプレイリスト</h1>
+<div class="loop-area">
+  <label class="loop-label">
+    <input type="checkbox" id="loopToggle"> プレイリストをループ再生
+  </label>
+</div>
 <div class="table-scroll">
   <table id="playlist-table">
     <thead>
