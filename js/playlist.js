@@ -25,14 +25,40 @@ function renderPlaylist() {
   });
 }
 
+let mediaSessionInitialized = false;
+
 window.playFromPlaylist = function(i) {
   if (audio.src !== playlist[i].file) {
     audio.src = playlist[i].file;
-    audio.play();
     playingIndex = i;
   } else {
     audio.paused ? audio.play() : audio.pause();
   }
+
+  if (playingIndex !== null && 'mediaSession' in navigator) {
+    navigator.mediaSession.metadata = new MediaMetadata({
+      title: playlist[playingIndex].title,
+      artist: playlist[playingIndex].artist || '',
+      album: playlist[playingIndex].album || '',
+      artwork: [
+        { src: playlist[playingIndex].artwork || '/images/default.png', sizes: '512x512', type: 'image/png' }
+      ]
+    });
+
+    if (!mediaSessionInitialized) {
+      navigator.mediaSession.setActionHandler('play', () => audio.play());
+      navigator.mediaSession.setActionHandler('pause', () => audio.pause());
+      navigator.mediaSession.setActionHandler('previoustrack', () => {
+        if (playingIndex > 0) playFromPlaylist(playingIndex - 1);
+      });
+      navigator.mediaSession.setActionHandler('nexttrack', () => {
+        if (playingIndex + 1 < playlist.length) playFromPlaylist(playingIndex + 1);
+      });
+      mediaSessionInitialized = true;
+    }
+  }
+
+  audio.play(); 
   renderPlaylist();
 };
 
@@ -117,5 +143,3 @@ if (loopToggle) {
     localStorage.setItem('playlistLoopEnabled', isLoopAllEnabled);
   });
 }
-
-
