@@ -82,17 +82,33 @@ function initMusicTable(options) {
       audio.src = songs[index].file;
       audio.play();
       playingIndex = index;
-      renderList(searchInput.value);
     } else {
       if (audio.paused) {
         audio.play();
-        playingIndex = index;
       } else {
         audio.pause();
-        playingIndex = index;
       }
-      renderList(searchInput.value);
+      playingIndex = index;
     }
+    if ("mediaSession" in navigator) {
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: songs[index].title,
+        artist: "",
+        album: "",
+        artwork: [
+          {
+            src: songs[index].artwork || "/images/default.png",
+            sizes: "512x512",
+            type: "image/png"
+          }
+        ]
+      });
+      navigator.mediaSession.setActionHandler("play", () => audio.play());
+      navigator.mediaSession.setActionHandler("pause", () => audio.pause());
+      navigator.mediaSession.setActionHandler("previoustrack", null);
+      navigator.mediaSession.setActionHandler("nexttrack", null);
+    }
+    renderList(searchInput.value);
   }
 
   window.addToPlaylist = function(index) {
