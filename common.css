@@ -237,7 +237,7 @@ body.dark-mode .search-box input[type="text"]:focus {
   margin: 0 2px;
   transition: filter 0.2s;
 }
-/* === OSのテーマ設定に自動連動 === */
+
 @media (prefers-color-scheme: dark) {
   body {
     background: #222;
