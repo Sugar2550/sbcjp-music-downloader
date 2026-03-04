@@ -2,7 +2,7 @@ let playlist = JSON.parse(localStorage.getItem('playlist') || '[]');
 let isLoopAllEnabled = localStorage.getItem('playlistLoopEnabled') === 'true';
 let audio = new Audio();
 let playingIndex = null;
-let allTracks = []; // グローバルトラックリスト保存用
+let allTracks = [];
 
 function savePlaylist() {
   localStorage.setItem('playlist', JSON.stringify(playlist));
@@ -91,10 +91,7 @@ window.clearPlaylist = function() {
 function sharePlaylist() {
   if (!playlist.length) return alert("プレイリストが空です");
   
-  // 各曲の全体JSON内でのインデックスを取得
-  const ids = playlist.map(track => {
-    return allTracks.findIndex(t => t.file === track.file);
-  }).join(',');
+  const ids = playlist.map(track => track.id).join(',');
   
   const url = `${location.origin}/playlist.html?sd=${ids}`;
   navigator.clipboard.writeText(url)
@@ -102,7 +99,6 @@ function sharePlaylist() {
     .catch(() => alert("コピーに失敗しました。"));
 }
 
-// 初期化処理
 Promise.all([
   fetch('/songs_mp3.json').then(r => r.json()),
   fetch('/songs_ogg.json').then(r => r.json()).catch(() => []),
@@ -110,14 +106,15 @@ Promise.all([
 .then(([mp3, ogg]) => {
   allTracks = [...mp3, ...ogg];
   
-  // 共有リンクのパース
   const shared = new URLSearchParams(location.search).get('sd');
   if (shared) {
     try {
-      const indices = shared.split(',').map(Number);
-      // 全体JSONのインデックスから曲を取得
-      playlist = indices
-        .map(index => allTracks[index])
+      const ids = shared.split(',');
+      playlist = ids
+        .map(id => {
+          const numId = isNaN(id) ? id : Number(id);
+          return allTracks.find(t => t.id === numId);
+        })
         .filter(t => t);
       savePlaylist();
     } catch (e) {
