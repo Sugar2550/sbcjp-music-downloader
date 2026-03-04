@@ -6,17 +6,6 @@ let allTracks = [];
 
 function savePlaylist() {
   localStorage.setItem('playlist', JSON.stringify(playlist));
-  updatePlaylistURL();
-}
-
-function updatePlaylistURL() {
-  if (playlist.length === 0) {
-    window.history.replaceState(null, '', window.location.pathname);
-  } else {
-    const ids = playlist.map(track => track.id).join(';');
-    const url = `${window.location.pathname}?sd=${ids}`;
-    window.history.replaceState(null, '', url);
-  }
 }
 
 function renderPlaylist() {
@@ -100,14 +89,15 @@ window.removeFromPlaylist = function(i) {
 window.clearPlaylist = function() {
   playlist = [];
   localStorage.removeItem('playlist');
-  updatePlaylistURL();
   renderPlaylist();
 };
 
 function sharePlaylist() {
   if (!playlist.length) return alert("プレイリストが空です");
 
-  const url = window.location.toString();
+  const ids = playlist.map(track => track.id).join(',');
+  
+  const url = `${location.origin}/playlist.html?sd=${ids}`;
   navigator.clipboard.writeText(url)
     .then(() => alert("共有リンクをコピーしました！"))
     .catch(() => alert("コピーに失敗しました。"));
@@ -118,17 +108,15 @@ Promise.all([
   fetch('/songs_ogg.json').then(r => r.json()).catch(() => []),
 ])
 .then(([mp3, ogg]) => {
-
   allTracks = [...mp3, ...ogg];
+  
   const shared = new URLSearchParams(location.search).get('sd');
   if (shared) {
     try {
-      const ids = shared.split(';');
-      
+      const ids = shared.split(',');
       playlist = ids
         .map(id => {
-          const trimmedId = id.trim();
-          const numId = isNaN(trimmedId) ? trimmedId : Number(trimmedId);
+          const numId = isNaN(id) ? id : Number(id);
           return allTracks.find(t => t.id === numId);
         })
         .filter(t => t);
