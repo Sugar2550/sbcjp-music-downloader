@@ -29,11 +29,16 @@ function renderPlaylist() {
 let mediaSessionInitialized = false;
 
 window.playFromPlaylist = function(i) {
-  if (audio.src !== playlist[i].file) {
+  if (playingIndex === i && audio.src === playlist[i].file) {
+    if (audio.paused) {
+      audio.play();
+    } else {
+      audio.pause();
+    }
+  } else {
     audio.src = playlist[i].file;
     playingIndex = i;
-  } else {
-    audio.paused ? audio.play() : audio.pause();
+    audio.play();
   }
 
   if (playingIndex !== null && 'mediaSession' in navigator) {
@@ -59,7 +64,6 @@ window.playFromPlaylist = function(i) {
     }
   }
 
-  audio.play(); 
   renderPlaylist();
 };
 
@@ -90,7 +94,7 @@ window.clearPlaylist = function() {
 
 function sharePlaylist() {
   if (!playlist.length) return alert("プレイリストが空です");
-  
+
   const ids = playlist.map(track => track.id).join(',');
   
   const url = `${location.origin}/playlist.html?sd=${ids}`;
