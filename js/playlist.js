@@ -13,7 +13,7 @@ function updatePlaylistURL() {
   if (playlist.length === 0) {
     window.history.replaceState(null, '', window.location.pathname);
   } else {
-    const ids = playlist.map(track => track.id).join(',');
+    const ids = playlist.map(track => track.id).join(';');
     const url = `${window.location.pathname}?sd=${ids}`;
     window.history.replaceState(null, '', url);
   }
@@ -118,15 +118,17 @@ Promise.all([
   fetch('/songs_ogg.json').then(r => r.json()).catch(() => []),
 ])
 .then(([mp3, ogg]) => {
-  allTracks = [...mp3, ...ogg];
 
+  allTracks = [...mp3, ...ogg];
   const shared = new URLSearchParams(location.search).get('sd');
   if (shared) {
     try {
-      const ids = shared.split(',');
+      const ids = shared.split(';');
+      
       playlist = ids
         .map(id => {
-          const numId = isNaN(id) ? id : Number(id);
+          const trimmedId = id.trim();
+          const numId = isNaN(trimmedId) ? trimmedId : Number(trimmedId);
           return allTracks.find(t => t.id === numId);
         })
         .filter(t => t);
