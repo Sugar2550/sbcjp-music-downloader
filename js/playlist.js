@@ -14,9 +14,8 @@ function updatePlaylistURL() {
     window.history.replaceState(null, '', window.location.pathname);
   } else {
     const ids = playlist.map(track => track.id).join(',');
-    const url = new URL(window.location);
-    url.searchParams.set('sd', ids);
-    window.history.replaceState(null, '', url.toString());
+    const url = `${window.location.pathname}?sd=${ids}`;
+    window.history.replaceState(null, '', url);
   }
 }
 
