@@ -2,6 +2,7 @@ let playlist = JSON.parse(localStorage.getItem('playlist') || '[]');
 let isLoopAllEnabled = localStorage.getItem('playlistLoopEnabled') === 'true';
 let audio = new Audio();
 let playingIndex = null;
+let allTracks = []; // グローバルトラックリスト保存用
 
 function savePlaylist() {
   localStorage.setItem('playlist', JSON.stringify(playlist));
@@ -80,59 +81,53 @@ window.removeFromPlaylist = function(i) {
   savePlaylist();
   renderPlaylist();
 };
+
 window.clearPlaylist = function() {
   playlist = [];
   localStorage.removeItem('playlist');
   renderPlaylist();
 };
 
-function encodeCompressed(str) {
-  const data = new TextEncoder().encode(str);
-  const deflated = pako.deflate(data);
-  let bin = '';
-  deflated.forEach(b => bin += String.fromCharCode(b));
-  return btoa(bin).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
-}
-
-function decodeCompressed(str) {
-  str = str.replace(/-/g, '+').replace(/_/g, '/');
-  const bin = atob(str);
-  const bytes = new Uint8Array(bin.length);
-  for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
-  const inflated = pako.inflate(bytes);
-  return new TextDecoder().decode(inflated);
-}
-
 function sharePlaylist() {
   if (!playlist.length) return alert("プレイリストが空です");
-  const ids = playlist.map(t => t.file).join(',');
-  const encoded = encodeCompressed(ids);
-  const url = `${location.origin}/playlist.html?sd=${encoded}`;
+  
+  // 各曲の全体JSON内でのインデックスを取得
+  const ids = playlist.map(track => {
+    return allTracks.findIndex(t => t.file === track.file);
+  }).join(',');
+  
+  const url = `${location.origin}/playlist.html?sd=${ids}`;
   navigator.clipboard.writeText(url)
     .then(() => alert("共有リンクをコピーしました！"))
     .catch(() => alert("コピーに失敗しました。"));
 }
 
-const shared = new URLSearchParams(location.search).get('sd');
-if (shared) {
-  try {
-    const decoded = decodeCompressed(shared);
-    const files = decoded.split(',');
-    Promise.all([
-      fetch('/songs_mp3.json').then(r => r.json()),
-      fetch('/songs_ogg.json').then(r => r.json()).catch(() => []),
-    ])
-    .then(([mp3, ogg]) => {
-      playlist = [...mp3, ...ogg].filter(t => files.includes(t.file));
-      renderPlaylist();
-    });
-  } catch (e) {
-    console.error(e);
-    alert("無効な共有リンクです。");
+// 初期化処理
+Promise.all([
+  fetch('/songs_mp3.json').then(r => r.json()),
+  fetch('/songs_ogg.json').then(r => r.json()).catch(() => []),
+])
+.then(([mp3, ogg]) => {
+  allTracks = [...mp3, ...ogg];
+  
+  // 共有リンクのパース
+  const shared = new URLSearchParams(location.search).get('sd');
+  if (shared) {
+    try {
+      const indices = shared.split(',').map(Number);
+      // 全体JSONのインデックスから曲を取得
+      playlist = indices
+        .map(index => allTracks[index])
+        .filter(t => t);
+      savePlaylist();
+    } catch (e) {
+      console.error(e);
+      alert("無効な共有リンクです。");
+    }
   }
-} else {
+  
   renderPlaylist();
-}
+});
 
 const loopToggle = document.getElementById('loopToggle');
 if (loopToggle) {
