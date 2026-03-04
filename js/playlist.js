@@ -6,6 +6,18 @@ let allTracks = [];
 
 function savePlaylist() {
   localStorage.setItem('playlist', JSON.stringify(playlist));
+  updatePlaylistURL();
+}
+
+function updatePlaylistURL() {
+  if (playlist.length === 0) {
+    window.history.replaceState(null, '', window.location.pathname);
+  } else {
+    const ids = playlist.map(track => track.id).join(',');
+    const url = new URL(window.location);
+    url.searchParams.set('sd', ids);
+    window.history.replaceState(null, '', url.toString());
+  }
 }
 
 function renderPlaylist() {
@@ -89,15 +101,14 @@ window.removeFromPlaylist = function(i) {
 window.clearPlaylist = function() {
   playlist = [];
   localStorage.removeItem('playlist');
+  updatePlaylistURL();
   renderPlaylist();
 };
 
 function sharePlaylist() {
   if (!playlist.length) return alert("プレイリストが空です");
 
-  const ids = playlist.map(track => track.id).join(',');
-  
-  const url = `${location.origin}/playlist.html?sd=${ids}`;
+  const url = window.location.toString();
   navigator.clipboard.writeText(url)
     .then(() => alert("共有リンクをコピーしました！"))
     .catch(() => alert("コピーに失敗しました。"));
@@ -109,7 +120,7 @@ Promise.all([
 ])
 .then(([mp3, ogg]) => {
   allTracks = [...mp3, ...ogg];
-  
+
   const shared = new URLSearchParams(location.search).get('sd');
   if (shared) {
     try {
