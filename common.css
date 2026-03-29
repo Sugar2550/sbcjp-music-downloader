@@ -307,3 +307,92 @@ body.dark-mode .search-box input[type="text"]:focus {
   }
 }
 
+.playlist-controls {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.playlist-controls input[type="text"] {
+  width: auto;
+  max-width: 250px;
+  margin: 0;
+}
+
+.saved-playlists {
+  margin: 20px auto;
+  max-width: 600px;
+  padding: 15px;
+  background: #f9f9f9;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+.saved-playlists h3 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.saved-playlist-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  margin-bottom: 8px;
+  background: #fff;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.saved-playlist-name {
+  flex: 1;
+}
+
+.saved-playlist-name small {
+  color: #888;
+}
+
+.saved-playlist-actions {
+  display: flex;
+  gap: 5px;
+}
+
+.saved-playlist-actions .simple-btn {
+  padding: 4px 10px;
+  font-size: 14px;
+  margin: 0;
+}
+body.dark-mode .saved-playlists {
+  background: #2a2a2a;
+  border-color: #444;
+}
+
+body.dark-mode .saved-playlist-item {
+  background: #333;
+  border-color: #555;
+}
+
+body.dark-mode .saved-playlist-name small {
+  color: #aaa;
+}
+
+/* ダークモード自動判定対応 */
+@media (prefers-color-scheme: dark) {
+  .saved-playlists {
+    background: #2a2a2a;
+    border-color: #444;
+  }
+
+  .saved-playlist-item {
+    background: #333;
+    border-color: #555;
+  }
+
+  .saved-playlist-name small {
+    color: #aaa;
+  }
+}

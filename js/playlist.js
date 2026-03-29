@@ -8,6 +8,97 @@ function savePlaylist() {
   localStorage.setItem('playlist', JSON.stringify(playlist));
 }
 
+function getSavedPlaylists() {
+  return JSON.parse(localStorage.getItem('savedPlaylists') || '{}');
+}
+
+function saveSavedPlaylists(playlists) {
+  localStorage.setItem('savedPlaylists', JSON.stringify(playlists));
+}
+
+function savePlaylistWithName() {
+  const nameInput = document.getElementById('playlistNameInput');
+  const name = nameInput.value.trim();
+
+  if (!name) {
+    alert('プレイリスト名を入力してください');
+    return;
+  }
+
+  if (!playlist.length) {
+    alert('プレイリストが空です');
+    return;
+  }
+
+  const saved = getSavedPlaylists();
+  if (saved[name]) {
+    if (!confirm(`「${name}」は既に存在します。上書きしますか？`)) {
+      return;
+    }
+  }
+
+  saved[name] = {
+    tracks: JSON.parse(JSON.stringify(playlist)),
+    createdAt: new Date().toISOString(),
+    trackCount: playlist.length
+  };
+
+  saveSavedPlaylists(saved);
+  nameInput.value = '';
+  renderSavedPlaylists();
+  alert(`「${name}」として保存されました`);
+}
+
+function loadSavedPlaylist(name) {
+  const saved = getSavedPlaylists();
+  if (saved[name]) {
+    playlist = JSON.parse(JSON.stringify(saved[name].tracks));
+    savePlaylist();
+    renderPlaylist();
+  }
+}
+
+function deleteSavedPlaylist(name) {
+  if (!confirm(`「${name}」を削除しますか？`)) {
+    return;
+  }
+
+  const saved = getSavedPlaylists();
+  delete saved[name];
+  saveSavedPlaylists(saved);
+  renderSavedPlaylists();
+}
+
+function renderSavedPlaylists() {
+  const saved = getSavedPlaylists();
+  const container = document.getElementById('savedPlaylistsContainer');
+  const names = Object.keys(saved);
+
+  if (!names.length) {
+    container.innerHTML = '';
+    return;
+  }
+
+  let html = '<div class="saved-playlists"><h3>保存済みプレイリスト</h3>';
+  names.forEach(name => {
+    const item = saved[name];
+    const date = new Date(item.createdAt).toLocaleString('ja-JP');
+    html += `
+      <div class="saved-playlist-item">
+        <div class="saved-playlist-name">
+          <strong>${name}</strong> (${item.trackCount}曲)
+          <br><small>${date}</small>
+        </div>
+        <div class="saved-playlist-actions">
+          <button class="simple-btn" onclick="loadSavedPlaylist('${name.replace(/'/g, "\\'")}')">読込</button>
+          <button class="simple-btn" onclick="deleteSavedPlaylist('${name.replace(/'/g, "\\'")}')">削除</button>
+        </div>
+      </div>`;
+  });
+  html += '</div>';
+  container.innerHTML = html;
+}
+
 function renderPlaylist() {
   const tbody = document.getElementById('playlist-tbody');
   if (!playlist.length) {
@@ -128,6 +219,7 @@ Promise.all([
   }
   
   renderPlaylist();
+  renderSavedPlaylists();
 });
 
 const loopToggle = document.getElementById('loopToggle');
