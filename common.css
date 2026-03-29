@@ -318,7 +318,7 @@ body.dark-mode .search-box input[type="text"]:focus {
 
 .playlist-controls input[type="text"] {
   width: auto;
-  max-width: 250px;
+  max-width: 500px;
   margin: 0;
 }
 

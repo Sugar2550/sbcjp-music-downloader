@@ -26,12 +26,6 @@ h1 { text-align: center; }
 </style>
 </head>
 <body>
-<div class="playlist-controls">
-  <input type="text" id="playlistNameInput" placeholder="プレイリスト名を入力...">
-  <button class="simple-btn" onclick="savePlaylistWithName()">保存</button>
-</div>
-
-<div id="savedPlaylistsContainer"></div>
 <div class="button-row">
   <button class="simple-btn" onclick="location.href='index.html'">HOME</button>
   <button class="simple-btn" onclick="location.href='mp3.html'">MP3</button>
@@ -55,6 +49,12 @@ h1 { text-align: center; }
     <tbody id="playlist-tbody"></tbody>
   </table>
 </div>
+<div class="playlist-controls">
+  <input type="text" id="playlistNameInput" placeholder="プレイリスト名を入力...">
+  <button class="simple-btn" onclick="savePlaylistWithName()">保存</button>
+</div>
+
+<div id="savedPlaylistsContainer"></div>
 <div style="text-align:center; margin-top:18px;">
   <button class="simple-btn" onclick="clearPlaylist()">全て削除</button>
   <button class="simple-btn" onclick="sharePlaylist()">プレイリストを共有</button>
