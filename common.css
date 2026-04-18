@@ -237,6 +237,10 @@ body.dark-mode .search-box input[type="text"]:focus {
   margin: 0 2px;
   transition: filter 0.2s;
 }
+.table-scroll {
+  overflow-y: auto;
+  height: 300px; /* Example height for larger screens */
+}
 
 @media (prefers-color-scheme: dark) {
   body {
@@ -304,6 +308,18 @@ body.dark-mode .search-box input[type="text"]:focus {
   .search-box input[type="text"]:focus {
     border-color: #82b1ff;
     background: #222;
+  }
+
+  th, td {
+    font-size: 1.2rem;  /* Increased font size for better visibility */
+    padding: 15px;     /* Increased padding */
+  }
+  button, input {
+    font-size: 1rem;   /* Adjusted button and input sizes */
+    padding: 10px;     /* Adjust padding */
+  }
+  .table-scroll {
+    height: auto;      /* Adjust table height for smaller screens */
   }
 }
 
