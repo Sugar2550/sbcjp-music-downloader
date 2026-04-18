@@ -400,38 +400,36 @@ body.dark-mode .saved-playlist-name small {
 /* スマートフォン用レスポンシブデザイン */
 @media (max-width: 768px) {
   body {
-    padding: 12px;
+    padding: 6px;
   }
 
   input[type="text"], #search {
-    font-size: 15px;
-    padding: 6px 8px;
-    width: 100%;
-    max-width: none;
+    font-size: 16px;
+    padding: 8px 10px;
   }
 
   .simple-btn {
     font-size: 14px;
-    padding: 6px 14px;
+    padding: 4px 8px;
   }
 
   .search-box input[type="text"] {
-    font-size: 15px;
-    padding: 10px 12px;
+    font-size: 16px;
+    padding: 12px 14px;
   }
 
   .loop-label {
-    font-size: 1.0em;
-    padding: 6px 12px;
+    font-size: 1.1em;
+    padding: 8px 14px;
   }
 
   table {
-    min-width: 1000px;
+    min-width: 900px;
   }
 
   th, td {
-    font-size: 13px;
-    padding: 8px 6px;
+    font-size: 14px;
+    padding: 4px 3px;
   }
 
   .table-scroll {
@@ -442,7 +440,7 @@ body.dark-mode .saved-playlist-name small {
   }
 
   .saved-playlist-actions .simple-btn {
-    font-size: 12px;
-    padding: 3px 8px;
+    font-size: 14px;
+    padding: 5px 10px;
   }
 }
