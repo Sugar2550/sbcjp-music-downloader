@@ -399,6 +399,20 @@ body.dark-mode .saved-playlist-name small {
 
 /* スマートフォン用レスポンシブデザイン */
 @media (max-width: 768px) {
+  h1 {
+    margin-top: 8px;
+    margin-bottom: 12px;
+  }
+
+  .search-area {
+    margin-bottom: 12px;
+  }
+
+  .loop-area {
+    margin-top: 12px;
+    margin-bottom: 12px;
+  }
+  
   body {
     padding: 6px;
   }
