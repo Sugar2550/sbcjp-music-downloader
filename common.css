@@ -401,40 +401,36 @@ body.dark-mode .saved-playlist-name small {
 @media (max-width: 768px) {
   body {
     padding: 10px;
+    font-size: 18px;
+    transform: scale(1.25);
+    transform-origin: top left;
+    width: 80%;
+  }
+
+  input[type="text"], #search {
+    font-size: 18px;
+  }
+
+  .table-scroll {
+    overflow-x: auto;
+    display: block;
+    width: 100vw;
+    margin-left: -10px;
   }
 
   table {
-    min-width: 100%;
-    max-width: 100%;
+    min-width: 1200px;
   }
 
   th, td {
-    font-size: 18px;
-    padding: 14px;
+    padding: 8px;
   }
 
   .simple-btn {
     font-size: 18px;
-    padding: 10px 22px;
   }
 
   .search-box input[type="text"] {
     font-size: 20px;
-    padding: 16px 18px;
-  }
-
-  .loop-label {
-    font-size: 1.3em;
-    padding: 10px 20px;
-  }
-
-  .saved-playlist-actions .simple-btn {
-    font-size: 16px;
-    padding: 8px 14px;
-  }
-
-  body.dark-mode th, body.dark-mode td {
-    font-size: 18px;
-    padding: 14px !important;
   }
 }
