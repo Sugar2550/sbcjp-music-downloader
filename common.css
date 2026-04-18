@@ -396,3 +396,55 @@ body.dark-mode .saved-playlist-name small {
     color: #aaa;
   }
 }
+
+/* スマートフォン用レスポンシブデザイン */
+@media (max-width: 768px) {
+  body {
+    padding: 10px;
+  }
+
+  h1 {
+    font-size: 24px;
+  }
+
+  input[type="text"], #search {
+    font-size: 16px;
+    padding: 8px 10px;
+    width: 100%;
+    max-width: none;
+    margin: 0 auto 15px;
+  }
+
+  .simple-btn {
+    font-size: 16px;
+    padding: 10px 16px;
+  }
+
+  .search-box input[type="text"] {
+    font-size: 16px;
+    padding: 12px 14px;
+  }
+
+  .loop-label {
+    font-size: 1.1em;
+    padding: 8px 14px;
+  }
+
+  /* テーブルのみスクロール可能にする重要な設定 */
+  table {
+    min-width: 1200px;
+    max-width: 1200px;
+  }
+
+  .table-scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 0 -10px;
+    padding: 0 10px;
+  }
+
+  th, td {
+    font-size: 14px;
+    padding: 10px 6px;
+  }
+}
