@@ -57,6 +57,8 @@ h1 { text-align: center; }
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
     display: block;
+    margin-top: 12px;
+    margin-bottom: 12px;
   }
 
   table {
@@ -66,11 +68,17 @@ h1 { text-align: center; }
     margin: 0;
   }
 
+  #playlist-table {
+    margin: 0;
+  }
+
   .playlist-controls {
     display: flex;
     flex-direction: column;
     gap: 8px;
     margin-top: 12px;
+    margin-bottom: 12px;
+    order: 3;
   }
 
   .playlist-controls input[type="text"] {
@@ -82,10 +90,12 @@ h1 { text-align: center; }
 
   #savedPlaylistsContainer {
     margin-top: 12px;
+    margin-bottom: 12px;
+    order: 2;
   }
 
   .saved-playlists {
-    margin: 12px 0;
+    margin: 0;
   }
 
   .saved-playlist-item {
@@ -104,10 +114,14 @@ h1 { text-align: center; }
     font-size: 12px;
     padding: 6px;
   }
+
+  body > div:last-child {
+    order: 1;
+  }
 }
 </style>
 </head>
-<body>
+<body style="display: flex; flex-direction: column;">
 <div class="button-row">
   <button class="simple-btn" onclick="location.href='index.html'">HOME</button>
   <button class="simple-btn" onclick="location.href='mp3.html'">MP3</button>
@@ -131,16 +145,19 @@ h1 { text-align: center; }
     <tbody id="playlist-tbody"></tbody>
   </table>
 </div>
+
+<div style="text-align:center; margin-top:18px;">
+  <button class="simple-btn" onclick="clearPlaylist()">全て削除</button>
+  <button class="simple-btn" onclick="sharePlaylist()">プレイリストを共有</button>
+</div>
+
 <div class="playlist-controls">
   <input type="text" id="playlistNameInput" placeholder="プレイリスト名を入力...">
   <button class="simple-btn" onclick="savePlaylistWithName()">保存</button>
 </div>
 
 <div id="savedPlaylistsContainer"></div>
-<div style="text-align:center; margin-top:18px;">
-  <button class="simple-btn" onclick="clearPlaylist()">全て削除</button>
-  <button class="simple-btn" onclick="sharePlaylist()">プレイリストを共有</button>
-</div>
+
 <script src="js/playlist.js"></script>
 </body>
 </html>
