@@ -120,6 +120,7 @@ tr:nth-child(odd) td { background: #fff; }
 .table-scroll {
   overflow-x: auto;
   display: block;
+  -webkit-overflow-scrolling: touch;
 }
 .dark-toggle .icon.sun {
   filter: brightness(1.2) saturate(1.2);
@@ -396,65 +397,48 @@ body.dark-mode .saved-playlist-name small {
     color: #aaa;
   }
 }
-
-/* スマートフォン用レスポンシブデザイン */
 @media (max-width: 768px) {
   h1 {
-    margin-top: 8px;
-    margin-bottom: 12px;
-  }
-
-  .search-area {
-    margin-bottom: 12px;
-  }
-
-  .loop-area {
-    margin-top: 12px;
-    margin-bottom: 12px;
-  }
-  
-  body {
-    padding: 6px;
+    font-size: 18px;
+    margin-bottom: 9px;
   }
 
   input[type="text"], #search {
-    font-size: 16px;
-    padding: 8px 10px;
-  }
-
-  .simple-btn {
     font-size: 14px;
-    padding: 4px 8px;
+    padding: 8px 12px;
+    max-width: 100%;
   }
 
   .search-box input[type="text"] {
-    font-size: 16px;
-    padding: 12px 14px;
+    font-size: 14px;
+    padding: 10px 12px;
   }
 
-  .loop-label {
-    font-size: 1.1em;
+  .simple-btn {
+    font-size: 13px;
     padding: 8px 14px;
   }
 
-  table {
-    min-width: 900px;
+  .loop-label {
+    font-size: 1.0em;
+    padding: 8px 14px;
   }
 
-  th, td {
-    font-size: 14px;
-    padding: 0px 3px;
+  .loop-area {
+    margin: 16px auto 16px auto;
+    gap: 20px;
   }
 
   .table-scroll {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
-    margin: 0 -12px;
-    padding: 0 12px;
+    display: block;
   }
 
-  .saved-playlist-actions .simple-btn {
-    font-size: 14px;
-    padding: 5px 10px;
+  table {
+    transform: scale(0.5);
+    transform-origin: top left;
+    width: 200%;
+    margin: 0;
   }
 }
