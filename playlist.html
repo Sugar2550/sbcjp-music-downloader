@@ -23,6 +23,88 @@ h1 { text-align: center; }
 #playlist-table {
   margin: 0 auto;
 }
+
+@media (max-width: 768px) {
+  body { 
+    padding: 12px; 
+  }
+
+  h1 { 
+    font-size: 24px;
+    margin-bottom: 12px;
+  }
+
+  .button-row {
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  .simple-btn {
+    font-size: 13px;
+    padding: 8px 14px;
+  }
+
+  .loop-label {
+    font-size: 1.0em;
+    padding: 8px 14px;
+  }
+
+  .loop-area {
+    margin: 12px auto 12px auto;
+  }
+
+  .table-scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    display: block;
+  }
+
+  table {
+    transform: scale(0.5);
+    transform-origin: top left;
+    width: 200%;
+    margin: 0;
+  }
+
+  .playlist-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 12px;
+  }
+
+  .playlist-controls input[type="text"] {
+    font-size: 13px;
+    padding: 8px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  #savedPlaylistsContainer {
+    margin-top: 12px;
+  }
+
+  .saved-playlists {
+    margin: 12px 0;
+  }
+
+  .saved-playlist-item {
+    padding: 6px 8px;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .saved-playlist-actions {
+    width: 100%;
+    gap: 4px;
+  }
+
+  .saved-playlist-actions .simple-btn {
+    flex: 1;
+    font-size: 12px;
+    padding: 6px;
+  }
+}
 </style>
 </head>
 <body>
