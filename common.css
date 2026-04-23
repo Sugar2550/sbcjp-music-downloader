@@ -436,9 +436,8 @@ body.dark-mode .saved-playlist-name small {
   }
 
   table {
-    transform: scale(0.5);
-    transform-origin: top left;
-    width: 200%;
+    zoom: 0.45;
+    width: 100%;
     margin: 0;
   }
 }
