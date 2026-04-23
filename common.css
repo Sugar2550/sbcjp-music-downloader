@@ -440,9 +440,11 @@ body.dark-mode .saved-playlist-name small {
     width: 100%;
     margin: 0;
   }
-/* --- サイト内プレイヤーUI --- */
+}
+/* --- サイト内プレイヤーUI 改良版 --- */
 body {
-  padding-bottom: 110px !important; 
+  /* プレイヤーの高さ分だけ余白を確保 */
+  padding-bottom: 130px !important; 
 }
 
 .player-container {
@@ -450,43 +452,37 @@ body {
   bottom: 0;
   left: 0;
   width: 100%;
-  background: rgba(255, 255, 255, 0.98);
-  border-top: 1px solid #ccc;
+  background: rgba(255, 255, 255, 0.95);
+  border-top: 1px solid #ddd;
   padding: 12px 0;
   box-shadow: 0 -3px 15px rgba(0,0,0,0.15);
   z-index: 1000;
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(8px);
 }
 
 .player-inner {
-  max-width: 1200px; /* テーブル幅に合わせる */
+  max-width: 600px; /* PCでも広がりすぎず、スマホと同じような中央配置にする */
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 0 15px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 8px; /* 縦の隙間 */
 }
 
 .now-playing {
-  font-size: 15px;
+  font-size: 14px;
   font-weight: bold;
-  margin-bottom: 10px;
   text-align: center;
   width: 100%;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-}
-
-.controls-wrapper {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  gap: 12px;
+  color: #333;
 }
 
 .seek-wrapper {
-  flex: 1;
+  width: 100%;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -494,35 +490,39 @@ body {
 
 #seek-bar {
   flex: 1;
-  height: 8px;
+  height: 6px;
   cursor: pointer;
 }
 
 .time-display {
   font-family: monospace;
-  font-size: 13px;
-  min-width: 45px;
+  font-size: 12px;
+  min-width: 40px;
+  text-align: center;
+  color: #555;
 }
 
-@media (min-width: 769px) {
-  .player-inner {
-    flex-direction: row;
-    justify-content: space-between;
-    height: 50px;
-  }
-  .now-playing {
-    margin-bottom: 0;
-    width: 30%; 
-    text-align: left;
-  }
-  .controls-wrapper {
-    width: 65%;
-  }
+.playback-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px; /* ボタン同士の隙間を適度に開ける */
+  width: 100%;
 }
 
-body.dark-mode .player-container {
-  background: rgba(30, 30, 30, 0.98);
-  border-top: 1px solid #444;
+.playback-controls .simple-btn {
+  padding: 8px 20px;
+  font-size: 16px;
+  margin: 0;
 }
-body.dark-mode .now-playing { color: #eee; }
+/* 自動判定時 (OS設定に合わせる場合) */
+@media (prefers-color-scheme: dark) {
+  .player-container {
+    background: rgba(30, 30, 30, 0.95);
+    border-top: 1px solid #444;
+  }
+  .now-playing,
+  .time-display {
+    color: #eee;
+  }
 }
