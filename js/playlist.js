@@ -231,3 +231,81 @@ if (loopToggle) {
     localStorage.setItem('playlistLoopEnabled', isLoopAllEnabled);
   });
 }
+
+// --- サイト内プレイヤー（シークバー ＆ 前後スキップ）の制御 ---
+(function() {
+  const seekBar = document.getElementById('seek-bar');
+  const currentTimeEl = document.getElementById('current-time');
+  const durationEl = document.getElementById('duration');
+  const nowPlayingEl = document.getElementById('now-playing');
+  const prevBtn = document.getElementById('prev-btn');
+  const nextBtn = document.getElementById('next-btn');
+  let isSeeking = false;
+
+  function formatTime(sec) {
+    if (isNaN(sec)) return "0:00";
+    const m = Math.floor(sec / 60);
+    const s = Math.floor(sec % 60).toString().padStart(2, '0');
+    return `${m}:${s}`;
+  }
+
+  if (seekBar) {
+    // メタデータ読み込み時に最大値を設定
+    audio.addEventListener('loadedmetadata', () => {
+      durationEl.textContent = formatTime(audio.duration);
+      seekBar.max = audio.duration;
+    });
+
+    // 再生中にシークバーを更新
+    audio.addEventListener('timeupdate', () => {
+      if (!isSeeking) {
+        seekBar.value = audio.currentTime;
+        currentTimeEl.textContent = formatTime(audio.currentTime);
+      }
+    });
+
+    // シークバーを操作中の処理
+    seekBar.addEventListener('input', () => {
+      isSeeking = true;
+      currentTimeEl.textContent = formatTime(seekBar.value);
+    });
+
+    // 操作が終わったら再生位置を確定
+    seekBar.addEventListener('change', () => {
+      audio.currentTime = seekBar.value;
+      isSeeking = false;
+    });
+
+    // 曲名表示の更新（再生開始時）
+    audio.addEventListener('play', () => {
+      if (playingIndex !== null && playlist[playingIndex]) {
+        nowPlayingEl.textContent = "再生中: " + playlist[playingIndex].title;
+      }
+    });
+  }
+
+  // 「前の曲」ボタン
+  if (prevBtn) {
+    prevBtn.addEventListener('click', () => {
+      if (!playlist.length) return;
+      // 曲が再生されていない場合は最後の曲へ、再生中の場合は前の曲へ
+      if (playingIndex === null) playingIndex = playlist.length - 1;
+      else playingIndex = (playingIndex - 1 + playlist.length) % playlist.length;
+      
+      // playlist.jsに定義されている既存の再生関数を呼び出す
+      window.playPlaylistTrack(playingIndex); 
+    });
+  }
+
+  // 「次の曲」ボタン
+  if (nextBtn) {
+    nextBtn.addEventListener('click', () => {
+      if (!playlist.length) return;
+      // 曲が再生されていない場合は最初の曲へ、再生中の場合は次の曲へ
+      if (playingIndex === null) playingIndex = 0;
+      else playingIndex = (playingIndex + 1) % playlist.length;
+      
+      window.playPlaylistTrack(playingIndex); 
+    });
+  }
+})();

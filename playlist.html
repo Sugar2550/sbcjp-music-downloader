@@ -156,6 +156,19 @@ h1 { text-align: center; }
 
 <div id="savedPlaylistsContainer"></div>
 
+<div class="player-container">
+    <div class="now-playing" id="now-playing">再生中の曲：なし</div>
+    <div class="controls-wrapper">
+      <button id="prev-btn" class="simple-btn">⏮</button>
+      <div class="seek-wrapper">
+        <span id="current-time" class="time-display">0:00</span>
+        <input type="range" id="seek-bar" value="0" max="100" step="1">
+        <span id="duration" class="time-display">0:00</span>
+      </div>
+      <button id="next-btn" class="simple-btn">⏭</button>
+    </div>
+</div>
+
 <script src="js/playlist.js"></script>
 </body>
 </html>

@@ -129,6 +129,50 @@ function initMusicTable(options) {
   });
 
   searchInput.addEventListener('input', e => renderList(e.target.value));
+
+  // --- サイト内プレイヤー（シークバー）の制御 ---
+  const seekBar = document.getElementById('seek-bar');
+  const currentTimeEl = document.getElementById('current-time');
+  const durationEl = document.getElementById('duration');
+  const nowPlayingEl = document.getElementById('now-playing');
+  let isSeeking = false;
+
+  function formatTime(sec) {
+    if (isNaN(sec)) return "0:00";
+    const m = Math.floor(sec / 60);
+    const s = Math.floor(sec % 60).toString().padStart(2, '0');
+    return `${m}:${s}`;
+  }
+
+  if (seekBar) {
+    audio.addEventListener('loadedmetadata', () => {
+      if(durationEl) durationEl.textContent = formatTime(audio.duration);
+      seekBar.max = audio.duration;
+    });
+
+    audio.addEventListener('timeupdate', () => {
+      if (!isSeeking) {
+        seekBar.value = audio.currentTime;
+        if(currentTimeEl) currentTimeEl.textContent = formatTime(audio.currentTime);
+      }
+    });
+
+    seekBar.addEventListener('input', () => {
+      isSeeking = true;
+      if(currentTimeEl) currentTimeEl.textContent = formatTime(seekBar.value);
+    });
+
+    seekBar.addEventListener('change', () => {
+      audio.currentTime = seekBar.value;
+      isSeeking = false;
+    });
+
+    audio.addEventListener('play', () => {
+      if (playingIndex !== null && songs[playingIndex]) {
+        if(nowPlayingEl) nowPlayingEl.textContent = "再生中: " + songs[playingIndex].title;
+      }
+    });
+  }
 }
 (function() {
   const prefersDark = window.matchMedia("(prefers-color-scheme: dark)");
