@@ -232,12 +232,13 @@ if (loopToggle) {
   });
 }
 
-// --- サイト内プレイヤー（シークバー ＆ 前後スキップ）の制御 ---
+// --- サイト内プレイヤー（再生・一時停止・シーク）の制御 ---
 (function() {
   const seekBar = document.getElementById('seek-bar');
   const currentTimeEl = document.getElementById('current-time');
   const durationEl = document.getElementById('duration');
   const nowPlayingEl = document.getElementById('now-playing');
+  const playPauseBtn = document.getElementById('play-pause-btn');
   const prevBtn = document.getElementById('prev-btn');
   const nextBtn = document.getElementById('next-btn');
   let isSeeking = false;
@@ -250,13 +251,11 @@ if (loopToggle) {
   }
 
   if (seekBar) {
-    // メタデータ読み込み時に最大値を設定
     audio.addEventListener('loadedmetadata', () => {
       durationEl.textContent = formatTime(audio.duration);
       seekBar.max = audio.duration;
     });
 
-    // 再生中にシークバーを更新
     audio.addEventListener('timeupdate', () => {
       if (!isSeeking) {
         seekBar.value = audio.currentTime;
@@ -264,48 +263,61 @@ if (loopToggle) {
       }
     });
 
-    // シークバーを操作中の処理
     seekBar.addEventListener('input', () => {
       isSeeking = true;
       currentTimeEl.textContent = formatTime(seekBar.value);
     });
 
-    // 操作が終わったら再生位置を確定
     seekBar.addEventListener('change', () => {
       audio.currentTime = seekBar.value;
       isSeeking = false;
     });
 
-    // 曲名表示の更新（再生開始時）
-    audio.addEventListener('play', () => {
+    // 共通の表示更新処理
+    const updateUI = () => {
       if (playingIndex !== null && playlist[playingIndex]) {
-        nowPlayingEl.textContent = "再生中: " + playlist[playingIndex].title;
+        nowPlayingEl.textContent = (audio.paused ? "一時停止中: " : "再生中: ") + playlist[playingIndex].title;
+        if (playPauseBtn) playPauseBtn.textContent = audio.paused ? "▶" : "⏸";
+      }
+      if (typeof renderPlaylist === 'function') renderPlaylist(); // テーブル側のボタン表示も更新
+    };
+
+    audio.addEventListener('play', updateUI);
+    audio.addEventListener('pause', updateUI);
+  }
+
+  // 再生/一時停止ボタンのロジック
+  if (playPauseBtn) {
+    playPauseBtn.addEventListener('click', () => {
+      if (playingIndex === null) {
+        // 何も再生されていない場合は1曲目を再生
+        if (playlist.length > 0) window.playFromPlaylist(0);
+      } else {
+        // 再生中なら一時停止、停止中なら再生
+        if (audio.paused) {
+          audio.play();
+        } else {
+          audio.pause();
+        }
       }
     });
   }
 
-  // 「前の曲」ボタン
   if (prevBtn) {
     prevBtn.addEventListener('click', () => {
       if (!playlist.length) return;
-      // 曲が再生されていない場合は最後の曲へ、再生中の場合は前の曲へ
       if (playingIndex === null) playingIndex = playlist.length - 1;
       else playingIndex = (playingIndex - 1 + playlist.length) % playlist.length;
-      
-      // playlist.jsに定義されている既存の再生関数を呼び出す
-      window.playPlaylistTrack(playingIndex); 
+      window.playFromPlaylist(playingIndex); 
     });
   }
 
-  // 「次の曲」ボタン
   if (nextBtn) {
     nextBtn.addEventListener('click', () => {
       if (!playlist.length) return;
-      // 曲が再生されていない場合は最初の曲へ、再生中の場合は次の曲へ
       if (playingIndex === null) playingIndex = 0;
       else playingIndex = (playingIndex + 1) % playlist.length;
-      
-      window.playPlaylistTrack(playingIndex); 
+      window.playFromPlaylist(playingIndex); 
     });
   }
 })();
