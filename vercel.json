@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/music/:path*",
+      "destination": "https://raw.githubusercontent.com/Sugar2550/ogg-music-downloader/main/music/:path*"
+    }
+  ]
+}
