@@ -452,7 +452,7 @@ body {
   bottom: 0;
   left: 0;
   width: 100%;
-  background: rgba(255, 255, 255, 0.95);
+  background: rgba(255, 255, 255, 0.8);
   border-top: 1px solid #ddd;
   padding: 12px 0;
   box-shadow: 0 -3px 15px rgba(0,0,0,0.15);
@@ -518,7 +518,7 @@ body {
 /* 自動判定時 (OS設定に合わせる場合) */
 @media (prefers-color-scheme: dark) {
   .player-container {
-    background: rgba(30, 30, 30, 0.95);
+    background: rgba(30, 30, 30, 0.8);
     border-top: 1px solid #444;
   }
   .now-playing,
