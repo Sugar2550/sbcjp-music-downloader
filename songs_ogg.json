@@ -1150,5 +1150,17 @@
     "title": "190 極ランキングの間結果受信音",
     "file": "/api/music/ogg/190.ogg",
     "version": "15.3"
+  },
+  {
+    "id": 1191,
+    "title": "191 パックマンふすま音",
+    "file": "/api/music/ogg/191.ogg",
+    "version": "15.5"
+  },
+  {
+    "id": 1192,
+    "title": "192 パックマン戦闘開始音",
+    "file": "/api/music/ogg/192.ogg",
+    "version": "15.5"
   }
 ]
