@@ -1162,5 +1162,23 @@
     "title": "192 パックマン戦闘開始音",
     "file": "/api/music/ogg/192.ogg",
     "version": "15.5"
-  }
+  },
+  {
+    "id": 1193,
+    "title": "193 こねこライブテーマ",
+    "file": "/api/music/ogg/193.ogg",
+    "version": "15.6"
+  },
+  {
+    "id": 1194,
+    "title": "194 （仮）",
+    "file": "/api/music/ogg/194.ogg",
+    "version": "15.6"
+  },
+  {
+    "id": 1195,
+    "title": "195 （仮）",
+    "file": "/api/music/ogg/195.ogg",
+    "version": "15.6"
+  }  
 ]
